@@ -1,0 +1,36 @@
+{% extends "layout/base.html" %}
+{% load static %}
+
+
+{% block title %}List Schema{% endblock %}
+
+{% block body_content %}
+<form method="post" hx-post="{% url 'save_schema' %}" hx-swap="outerHTML" hx-target="#schema">
+    <h1>Schemas</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Description Dict</th>
+        <th>Pandera Schema</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for schema in schemas %}
+        <tr>
+          <td>{{ schema.id }}</td>
+          <td>{{ schema.description_dict }}</td>
+          <td>{{ schema.pandera_schema }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="3">No schemas available.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <a href="{% url 'create_schema' %}"><button>Create new Schema</button></a>
+</form>
+
+
+{% endblock %}

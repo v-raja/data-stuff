@@ -1,0 +1,24 @@
+{% extends "layout/base.html" %}
+{% load static %}
+
+{% block title %}Mapping Plan{% endblock %}
+
+{% block body_content %}
+<form method="post" hx-post="{% url 'generate_file' schema_id %}" hx-swap="outerHTML" hx-target="#output_file">
+    {% csrf_token %}
+    {% for field, description in mapping_plan.items %}
+        <label for="{{ field }}">{{ field }}</label>
+        <input type="text" id="{{ field }}" name="{{ field }}" value="{{ description }}">
+    {% endfor %}
+    {% for uploaded_file in uploaded_files %}
+        <input type="hidden" name="uploaded_file_ids" value="{{ uploaded_file.id }}">
+    {% endfor %}
+    <button type="submit">Generate File</button>
+</form>
+
+
+<div id="output_file">
+    <!-- The DataFrame will be displayed here -->
+</div>
+
+{% endblock %}

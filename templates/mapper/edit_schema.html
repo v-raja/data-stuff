@@ -1,0 +1,27 @@
+{% extends "layout/base.html" %}
+{% load static %}
+
+
+{% block title %}Create Schema{% endblock %}
+
+{% block body_content %}
+<form method="post" action="{% url 'save_schema' %}">
+    {% csrf_token %}
+    <h2>Name</h2>
+    {{ form.name.label_tag }} {{ form.name }}
+
+    <h2>Field Description</h2>
+    <p>This provides context about the fields and helps us with mapping your data.</p>
+    {% for field in form %}
+        {% if field.name in form.description_fields %}
+            {{ field.label_tag }} {{ field }}
+        {% endif %}
+    {% endfor %}
+    <h2>Data Quality Schema</h2>
+    <p>This schema will be used to validate the quality of your customer's data.</p>
+    {{ form.pandera_schema }}
+    <button type="submit">Save</button>
+</form>
+
+
+{% endblock %}

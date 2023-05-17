@@ -1,0 +1,7 @@
+django-multiupload
+pandas
+dj-database-url
+black[d]
+psycopg2-binary
+pandera[io]
+django-jsoneditor
