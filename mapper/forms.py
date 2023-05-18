@@ -1,9 +1,7 @@
 import json
 
 from django import forms
-from jsoneditor.forms import JSONEditor
 from multiupload.fields import MultiFileField
-from prettyjson import PrettyJSONWidget
 
 from .models import Schema, UploadedFile
 
