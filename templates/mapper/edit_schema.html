@@ -20,6 +20,9 @@
     <h2>Data Quality Schema</h2>
     <p>This schema will be used to validate the quality of your customer's data.</p>
     {{ form.pandera_schema }}
+    <h2>Categorical data</h2>
+    <p>The list of options here are enforced. Instead of a list of values, you can provide a description of the category. For example, "colors": "The colors of the rainbow".</p>
+    {{ form.categories }}
     <button type="submit">Save</button>
 </form>
 

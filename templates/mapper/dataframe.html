@@ -1,0 +1,45 @@
+{% load get_item %}
+
+<div class="max-h-96 overflow-auto -mx-3 border-t relative">
+            <table class="table-auto rounded-lg font-mono w-full text-gray-900 text-xs">
+                <thead class="sticky top-0 left-0 right-0 bg-white shadow-sm z-10">
+                <tr class="border-b text-left divide-x dark:divide-gray-800 space-y-54">
+                    {#                                <th class="max-w-sm p-2 text-left">model name</th>#}
+                    {#                                {% for metric in validation_metric_order %}#}
+                    {#                                    <th class="max-w-sm p-2 text-left">{{ metric.name }}</th>#}
+                    {#                                {% endfor %}#}
+                    {% for header in df_header %}
+                        <th class="max-w-sm p-2 text-left">{{ header }}</th>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody class="h-16 overflow-scroll">
+                {% for row_dict in df_data %}
+                    <tr class="border-b last:border-none divide-x dark:divide-gray-800 space-x-4 odd:bg-gray-50 dark:odd:bg-gray-900 group hover:cursor-pointer focus:bg-gradient-to-b focus:from-blue-100 dark:focus:from-blue-900 focus:to-blue-50 dark:focus:to-gray-900 hover:bg-gray-100 dark:hover:bg-gray-900 focus:odd:bg-white"
+                        tabindex="0">
+                        {#                                    <td class="max-w-sm break-words p-2 group-focus:align-top">#}
+                        {#                                        <div class="line-clamp-2 group-focus:line-clamp-none">#}
+                        {#                                            <div class="" dir="auto">{{ model }}#}
+                        {#                                            </div>#}
+                        {#                                        </div>#}
+                        {#                                    </td>#}
+                        {% for header in df_header %}
+                            <td class="max-w-sm break-words p-2 group-focus:align-top">
+                                <div class="line-clamp-2 group-focus:line-clamp-none">
+                                    <div class="" dir="auto">{{ row_dict|get_item:header }}
+
+                                    </div>
+                                </div>
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+            {#            {% if df_data|length > 15 %}#}
+{#            <div class="border-t border-gray-300 dark:border-gray-700 border-dashed text-center py-3 text-xs bg-gradient-to-b from-gray-100 to-white font-mono dark:from-gray-950 dark:to-gray-900">#}
+{#                End of preview (truncated to 15 rows)#}
+{#            </div>#}
+            {#            {% endif %}#}
+        </div>

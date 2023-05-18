@@ -25,10 +25,11 @@ class CreateSchemaForm(forms.Form):
 
 class EditSchemaForm(forms.ModelForm):
     pandera_schema = forms.CharField(widget=forms.Textarea, label='Data Quality Schema')
+    categories = forms.CharField(widget=forms.Textarea, label='Categories')
 
     class Meta:
         model = Schema
-        fields = ['name', 'pandera_schema']
+        fields = ['name', 'pandera_schema', 'categories']
 
     def __init__(self, *args, **kwargs):
         inital = kwargs.get('initial', {})
@@ -53,6 +54,10 @@ class EditSchemaForm(forms.ModelForm):
         if self.initial.get('pandera_schema'):
             # Format the JSON string with indents
             self.initial['pandera_schema'] = json.dumps(json.loads(self.initial['pandera_schema']), indent=4)
+
+        if self.initial.get('categories'):
+            # Format the JSON string with indents
+            self.initial['categories'] = json.dumps(json.loads(self.initial['categories']), indent=4)
 
     def save(self, commit=True):
         instance = super().save(commit=False)
@@ -80,3 +85,49 @@ class EditSchemaForm(forms.ModelForm):
         except json.JSONDecodeError:
             raise forms.ValidationError('Invalid JSON format.')
         return pandera_schema
+
+# class ApplyTransformationForm(forms.Form):
+#     def __init__(self, *args, **kwargs):
+#         columns = kwargs.pop('columns', [])
+#         errors = kwargs.pop('errors', {})
+#         super().__init__(*args, **kwargs)
+#
+#         for column in columns:
+#             self.fields[f'transformation_{column}'] = forms.CharField(
+#                 initial='',
+#                 label=f"Transformation for {column}",
+#                 help_text=errors.get(column, ''),
+#                 required=False
+#             )
+
+
+class ApplyTransformationForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        errors = kwargs.pop('errors', {})
+        columns = kwargs.pop('columns', [])
+        initial = kwargs.get('initial', {})
+        if initial:
+            columns = initial.keys()
+        super().__init__(*args, **kwargs)
+
+        # Dynamically add a field for each transformation in the initial data
+        for column in columns:
+            if column.startswith('transformation_'):
+                # Strip 'transformation_' from the key to get the column name
+                column_name = column.replace('transformation_', '')
+            else:
+                column_name = column
+
+            # Get the quality check error for this column, if any
+            error = errors.get(column_name, '')
+
+            if error:
+                # If there's an error, include it in the field's help text
+                self.fields[f"transformation_{column_name}"] = forms.CharField(initial='', label=column_name, help_text=f'Error: {error}. Please suggest a transformation to fix this error.')
+            else:
+                # If there's no error, just add the field normally
+                self.fields[f"transformation_{column_name}"] = forms.CharField(initial='', label=column_name, required=False)
+
+            # self.fields[column] = forms.CharField(initial='', label=column_name, required=True if error else False)
+            # if error:
+            #     self.add_error(column, f"{error}. Please suggest a transformation to fix this error.")

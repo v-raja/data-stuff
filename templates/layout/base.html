@@ -1,4 +1,8 @@
-{% load static %}
+{% load static %}{% load static tailwind_tags %}
+
+
+{% load tailwind_filters %}
+{% load crispy_forms_tags %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,6 +16,8 @@
             {% endif %}
         {% endblock %}
     </title>
+    {% tailwind_css %}
+    <script src="https://unpkg.com/htmx.org/dist/ext/disable-element.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -49,6 +55,7 @@
     {% endblock %}
 </div>
 <script src="https://unpkg.com/htmx.org@1.8.6"></script>
+
 {#<script>#}
 {#    document.body.addEventListener('htmx:configRequest', (event) => {#}
 {#        event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';#}

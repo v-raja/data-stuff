@@ -72,39 +72,46 @@
 
 
 <div class="mt-4 w-full max-w-3xl">
-<form method="post" action="{% url 'mapping_correction' schema_id %}">
+<form method="post" hx-post="{% url 'apply_transformations' schema_id %}" hx-swap="outerHTML" hx-target="#final_file">
     {% csrf_token %}
     <div class="flex flex-col space-y-2">
     <div class="sm:grid sm:grid-cols-3 sm:items-start sm:py-3">
       <div class="block font-medium leading-6 text-gray-900 sm:pt-1.5">Schema column</div>
       <div class="mt-2 sm:col-span-2 sm:mt-0">
         <div class="block font-medium leading-6 text-gray-900 sm:pt-1.5">
-            How it will be mapped
+            Transformation to apply
         </div>
       </div>
     </div>
-    {% for field, description in mapping_plan.items %}
+    {% for field in form %}
         <div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-2 sm:py-3">
-          <label for="{{ field }}" class="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">{{ field }}</label>
+          <label for="{{ field.id_for_label }}" class="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">{{ field.label }}</label>
           <div class="mt-2 sm:col-span-2 sm:mt-0">
             <input type="text" name="{{ field }}" id="{{ field }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" value="{{ description }}">
+              {% if field.help_text %}
+                <p class="help">{{ field.help_text }}</p>
+            {% endif %}
           </div>
         </div>
+
+{#        <div>#}
+{#            <label for="{{ field.id_for_label }}">{{ field.label }}</label>#}
+{#            {{ field }}#}
+{#            {% if field.help_text %}#}
+{#                <p class="help">{{ field.help_text }}</p>#}
+{#            {% endif %}#}
+{#        </div>#}
     {% endfor %}
-    {% for uploaded_file in uploaded_files %}
-        <input type="hidden" name="uploaded_file_ids" value="{{ uploaded_file.id }}">
-    {% endfor %}
-    <div class="flex flex-row items-center space-x-4">
-    <button type="submit" hx-post="{% url 'generate_file' schema_id %}" hx-swap="outerHTML" hx-target="#output_file" class="mt-8 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" hx-ext="disable-element" hx-disable-element="self">Generate Preview</button>
-    <button type="submit" name="next" class="mt-8 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Next Step</button>
-        </div>
+{#    <button type="submit">Apply and Check</button>#}
+    <button type="submit" class="mt-8 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Apply and Check</button>
     </div>
 </form>
+
 <div class="pb-20">
     <div class="text-xl mt-10">File Preview</div>
-    <p class="mt-2">A preview will be shown once the Generate Preview button is clicked.</p>
+    <p class="mt-2">A preview will be shown once the Apply and Check button is clicked.</p>
     <div class="mt-4">
-    <div id="output_file">
+    <div id="final_file">
     <!-- The DataFrame will be displayed here -->
     </div>
     </div>

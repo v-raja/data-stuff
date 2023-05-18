@@ -12,4 +12,5 @@ class Schema(models.Model):
     name = models.CharField(max_length=128)
     description_dict = models.JSONField()
     pandera_schema = models.JSONField()
+    categories = models.JSONField(null=True)
     # description = models.TextField(blank=True, null=True)

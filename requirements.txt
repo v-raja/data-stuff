@@ -5,3 +5,9 @@ black[d]
 psycopg2-binary
 pandera[io]
 django-jsoneditor
+langchain[llm]
+marvin
+pydantic
+orjson==3.7.0
+django-tailwind
+crispy-tailwind
