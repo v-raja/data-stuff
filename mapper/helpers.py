@@ -10,6 +10,9 @@ from marvin import ai_fn, ai_model
 
 PARSED_FROM_UNSTRUCTURED_TEXT = "parsed_from_text"
 
+import langchain
+from langchain.cache import InMemoryCache
+langchain.llm_cache = InMemoryCache()
 
 class FileFieldReference(BaseModel):
     """

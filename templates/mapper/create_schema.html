@@ -1,12 +1,29 @@
 {% extends "layout/base.html" %}
 {% load static %}
+{% load crispy_forms_tags %}
+
+
 
 {% block title %}Create Schema{% endblock %}
 
 {% block body_content %}
+    <div class="bg-gradient-to-br from-green-200/10 via-blue-200/5 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-950">
+        <div class="container pb-16 pt-14 2xl:pt-20">
+            <div class="flex flex-col items-center">
+                <div class="max-w-lg w-full mx-auto">
+                    <h1 class="text-xl font-semibold">
+                        Create Schema
+                    </h1>
+                    <div class="mt-6">
+
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Upload</button>
+    {{ form | crispy }}
+    <button type="submit" class="mt-8 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Upload</button>
 </form>
+    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

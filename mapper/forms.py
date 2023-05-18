@@ -21,7 +21,7 @@ class UploadFileForm(forms.Form):
 class CreateSchemaForm(forms.Form):
     name = forms.CharField(max_length=128)
     # description = forms.CharField(widget=forms.Textarea, required=False)
-    dataset = forms.FileField()
+    example_dataset = forms.FileField()
 
 class EditSchemaForm(forms.ModelForm):
     pandera_schema = forms.CharField(widget=forms.Textarea, label='Data Quality Schema')

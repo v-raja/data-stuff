@@ -225,7 +225,7 @@ def create_schema(request):
         form = CreateSchemaForm(request.POST, request.FILES)
         if form.is_valid():
             # Load the uploaded dataset into a DataFrame
-            df = pd.read_csv(form.cleaned_data['dataset'])
+            df = pd.read_csv(form.cleaned_data['example_dataset'])
 
             # Generate the initial description_dict and pandera_schema
             description_dict, categories_dict = generate_description_dict(df)
