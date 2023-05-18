@@ -55,12 +55,11 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "theme.apps.ThemeConfig",
+    "theme",
     "django.contrib.staticfiles",
     "mapper",
     "jsoneditor",
     "tailwind",
-    "theme",
     "crispy_forms",
     "crispy_tailwind"
 ]
