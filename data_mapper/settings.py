@@ -18,7 +18,7 @@ from django.conf.urls.static import static
 
 from pathlib import Path
 
-
+from dotenv import find_dotenv, load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -33,7 +33,17 @@ SECRET_KEY = "django-insecure-rw9sj8_(gl81a8#*pisp^*&-t=4qwv(!3kmlb9uxqb+1+_@jqu
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+IS_HEROKU = "DYNO" in os.environ
+
+ENV_FILE = find_dotenv()
+if ENV_FILE:
+    load_dotenv(ENV_FILE)
+
+# Generally avoid wildcards(*). However since Heroku router provides hostname validation it is ok
+if IS_HEROKU:
+    ALLOWED_HOSTS = ["*"]
+else:
+    ALLOWED_HOSTS = []
 
 
 # Application definition
